@@ -1,5 +1,5 @@
-pedidos = []
-entregadores = []
+pedidos = {}
+entregadores = {}
 
 def cadastrarPedido (pedido):
     id = input("Insira um ID: ")
@@ -29,6 +29,8 @@ def cadastrarPedido (pedido):
         case _:
             status = "Pendente"
     idEntregador = int(input("Informe o ID do entregador: "))
+
+    pedido[id] = [nome, endereco, prioridade, descricao, idEntregador]
     
     
     return pedido
@@ -39,4 +41,8 @@ opcao = int(input("Digite a opção desejada: \n\n1 - Cadastro de pedidos \n2 - 
 
 match(opcao):
     case 1:
+        cadastrarPedido(pedidos)
+
+
+print(pedidos)
         
