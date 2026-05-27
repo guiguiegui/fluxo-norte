@@ -35,14 +35,41 @@ def cadastrarPedido (pedido):
     
     return pedido
     
-    
+def cadastrarEntregadores (entregadores):
+    idEntregador = input("Insira um id para o Entregador: ")
+    entregador_nome = input("Insira o nome do Entregador: ")
+    veiculo_entregador = int(input("Escolha o veiculo do entregador, 1 para Carro, 2 para moto, 3 para Van: "))
+    match(veiculo_entregador):
+        case 1:
+            veiculo = "Carro"
+        case 2:
+            veiculo = "Moto"
+        case 3:
+            veiculo = "Van"   
+    disponibilidade = input("Mostre a disponibilidade do entregador, 1 para disponivel, 2 para indisponivel: ")
+    match(disponibilidade):
+        case 1:
+            disponibilidade = "Disponivel"
+        case 2:
+            disponibilidade = "Indisponivel"
 
-opcao = int(input("Digite a opção desejada: \n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n"))
+    entregadores[id] =  [entregador_nome, veiculo_entregador, disponibilidade, idEntregador]
+
+    return entregadores
+
+print("\n\n----------Bem-vindo ao sistema de gerenciamento de entregas da Fluxo Norte!----------\n\n")
+print("Digite a opção desejada: \n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
+opcao = int(input("Digite a opção desejada: "))
 
 match(opcao):
     case 1:
         cadastrarPedido(pedidos)
-
+    case 2:
+        cadastrarEntregadores(entregadores)
+    case 3:
+        atualizarPedidos(pedidos)
+    case 4:
+        consultaInformacoes(pedidos, entregadores)
 
 print(pedidos)
         
