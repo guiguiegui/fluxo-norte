@@ -1,5 +1,6 @@
 pedidos = {}
 entregadores = {}
+rodando = 1
 
 def cadastrarPedido (pedido):
     id = input("Insira um ID: ")
@@ -61,15 +62,16 @@ print("\n\n----------Bem-vindo ao sistema de gerenciamento de entregas da Fluxo 
 print("Digite a opção desejada: \n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
 opcao = int(input("Digite a opção desejada: "))
 
-match(opcao):
-    case 1:
-        cadastrarPedido(pedidos)
-    case 2:
-        cadastrarEntregadores(entregadores)
-    case 3:
-        atualizarPedidos(pedidos)
-    case 4:
-        consultaInformacoes(pedidos, entregadores)
+while rodando != 0:
+    match(opcao):
+        case 1:
+            cadastrarPedido(pedidos)
+        case 2:
+            cadastrarEntregadores(entregadores)
+    rodando = 0
+
+    print("\n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
+    opcao = int(input("Quer continuar?\n\nDigite a opção desejada: "))
 
 print(pedidos)
         
