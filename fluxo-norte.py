@@ -84,7 +84,7 @@ def consultarInformacoes(pedidos, entregadores):
                 if info[4] == "PENDENTE":
                     print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
         case 3:
-            id_pedido = input("Digite o ID do pedido que deseja buscar: ")
+            id_pedido = input("Digite o ID do pedido que deseja buscar: ").upper()
             if id_pedido in pedidos:
                 info = pedidos[id_pedido]
                 print(f"ID do pedido: {id_pedido}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
@@ -96,7 +96,7 @@ def consultarInformacoes(pedidos, entregadores):
                 if info[2] == "DISPONIVEL":
                     print(f"ID do entregador: {id}, Nome do entregador: {info[0]}, Veículo: {info[1]}, Disponibilidade: {info[2]}, ID do entregador: {info[3]}")
         case 5:
-            id_entregador = input("Digite o ID do entregador para ver suas entregas")
+            id_entregador = input("Digite o ID do entregador para ver suas entregas: ").upper()
             print(f"Entregas realizadas pelo entregador {id_entregador}: ")
             for id, info in pedidos.items():
                 if info[4] == id_entregador:
@@ -106,7 +106,13 @@ def consultarInformacoes(pedidos, entregadores):
 print("\n\n----------Bem-vindo ao sistema de gerenciamento de entregas da Fluxo Norte!----------\n\n")
 
 while rodando != 0:
-    print("\tMENU\n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
+    print("-" * 20 + " MENU " + "-" * 20 + "\n\n")
+    print("1 - Cadastro de pedidos")
+    print("2 - Cadastro de Entregadores")
+    print("3 - Atualização dos pedidos")
+    print("4 - Consulta de informações")
+    print("5 - Relatórios operacionais")
+    print("6 - Finalizar o sistema\n")
     opcao = int(input("Digite a opção desejada: "))
     match(opcao):
         case 1:
