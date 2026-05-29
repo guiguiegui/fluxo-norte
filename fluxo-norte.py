@@ -58,8 +58,43 @@ def cadastrarEntregadores (entregadores):
 
     return entregadores
 
+def consultarInformacoes(pedidos, entregadores):
+    print("Consulta de informações")
+    print("\n1 - Pedidos Entregues\n2 - Pedidos Entregues\n3 - Buscar por pedido\n4 - Entregador disponivel\n5 - Todas as entregas realizadas por um entregador\n6 - Voltar para o menu principal\n\n")
+    opcao = int(input("Digite a opção desejada: "))
+    match(opcao):
+        case 1:
+            print("Pedidos Entregues: ")
+            for id, info in pedidos.items():
+                if info[4] == "Entregue":
+                    print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
+        case 2:
+            print("Pedidos Pendentes: ")
+            for id, info in pedidos.items():
+                if info[4] == "Pendente":
+                    print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
+        case 3:
+            id_pedido = input("Digite o ID do pedido que deseja buscar: ")
+            if id_pedido in pedidos:
+                info = pedidos[id_pedido]
+                print(f"ID do pedido: {id_pedido}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
+            else:
+                print("Pedido não encontrado.")
+        case 4:
+            print("Entregadores Disponíveis: ")
+            for id, info in entregadores.items():
+                if info[2] == "Disponivel":
+                    print(f"ID do entregador: {id}, Nome do entregador: {info[0]}, Veículo: {info[1]}, Disponibilidade: {info[2]}, ID do entregador: {info[3]}")
+        case 5:
+            id_entregador = input("Digite o ID do entregador para ver suas entregas")
+            print(f"Entregas realizadas pelo entregador {id_entregador}: ")
+            for id, info in pedidos.items():
+                if info[4] == id_entregador:
+                    print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
+            
+
 print("\n\n----------Bem-vindo ao sistema de gerenciamento de entregas da Fluxo Norte!----------\n\n")
-print("Digite a opção desejada: \n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
+print("Digite a opção desejada:\n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
 opcao = int(input("Digite a opção desejada: "))
 
 while rodando != 0:
@@ -68,10 +103,18 @@ while rodando != 0:
             cadastrarPedido(pedidos)
         case 2:
             cadastrarEntregadores(entregadores)
-    rodando = 0
+        case 3:
+            atualizarPedidos(pedidos)
+        case 4:
+            consultarInformacoes(pedidos, entregadores)
+        case 5:
+            relatoriosOperacionais(pedidos, entregadores)
+        case 6:
+            print("Sistema finalizado. Obrigado por usar o sistema de gerenciamento de entregas da Fluxo Norte!")
+            rodando = 0
 
-    print("\n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
-    opcao = int(input("Quer continuar?\n\nDigite a opção desejada: "))
+    print("\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
+    opcao = int(input("Quer continuar?\nDigite a opção desejada: "))
 
 print(pedidos)
         
