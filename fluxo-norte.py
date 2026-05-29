@@ -39,8 +39,8 @@ def cadastrarPedido (pedido):
 def cadastrarEntregadores (entregadores):
     idEntregador = input("Insira um id para o Entregador: ")
     entregador_nome = input("Insira o nome do Entregador: ")
-    veiculo_entregador = int(input("Escolha o veiculo do entregador, 1 para Carro, 2 para moto, 3 para Van: "))
-    match(veiculo_entregador):
+    veiculo = int(input("Escolha o veiculo do entregador, 1 para Carro, 2 para moto, 3 para Van: "))
+    match(veiculo):
         case 1:
             veiculo = "Carro"
         case 2:
@@ -54,7 +54,7 @@ def cadastrarEntregadores (entregadores):
         case 2:
             disponibilidade = "Indisponivel"
 
-    entregadores[id] =  [entregador_nome, veiculo_entregador, disponibilidade, idEntregador]
+    entregadores[id] =  [entregador_nome, veiculo, disponibilidade, idEntregador]
 
     return entregadores
 
