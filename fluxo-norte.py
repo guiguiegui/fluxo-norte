@@ -11,48 +11,49 @@ def cadastrarPedido (pedido):
     letra = choice(ascii_uppercase)
     numeros = f"{randint(0, 9999):04d}"
     id = letra + numeros
-    nome = input("Insira o nome do cliente: ")
-    endereco = input("Insira o endereço: ")
+    nome = input("Insira o nome do cliente: ").upper
+    endereco = input("Insira o endereço: ").upper
     print("NÍVEIS DE PRIORIDADE\n\tDigite 1 para PRIORIDADE ALTA\n\tDigite 2 para PRIORIDADE NORMAL")
-    prioridade = int(input("Escolha o nível da prioridade: "))
+    prioridade = int(input("Informe o nível de prioridade: "))
     match(prioridade):
         case 1:
-            prioridade = "Alta"
+            prioridade = "ALTA"
         case 2:
-            prioridade = "Normal"
+            prioridade = "NORMAL"
         case _:
-            prioridade = "Normal"
-    descricao = input("Digite a descrição do produto: ")
-    print("TIPOS DE STATUS\n\tDigite 1 para status PENDENTE\n\tDigite 2 para status EM ROTA\n\tDigite 3 para status ENTREGUE\n\tDigite 4 para status CANCELADO")
-    status = "Pendente"
-    idEntregador = "Não associado"
+            prioridade = "NORMAL"
+    descricao = input("Digite a descrição do produto: ").upper
+    status = "PENDENTE"
+    idEntregador = "NAO ASSOCIADO"
 
     pedido[id] = [nome, endereco, prioridade, descricao, status, idEntregador]
     return pedido
     
 def cadastrarEntregadores (pedidos, entregadores):
     id = f"{randint(0, 9999):04d}"
-    nome = input("Insira o nome do Entregador: ")
+    nome = input("Insira o nome do entregador: ")
 
-    veiculo = int(input("Escolha o veiculo do entregador, 1 para Carro, 2 para moto, 3 para Van: "))
+    print("TIPOS DE VEÍCULOS\n\tDigite 1 para CARRO\n\tDigite 2 para MOTO\n\tDigite 3 para VAN")
+    veiculo = int(input("Informe o veículo do entregador: "))
     match(veiculo):
         case 1:
-            veiculo = "Carro"
+            veiculo = "CARRO"
         case 2:
-            veiculo = "Moto"
+            veiculo = "MOTO"
         case 3:
-            veiculo = "Van"   
+            veiculo = "VAN"   
 
-    disponibilidade = int(input("Mostre a disponibilidade do entregador, 1 para disponivel, 2 para indisponivel: "))
+    print("DISPONIBILIDADE\n\tDigite 1 para DISPONÍVEL\n\tDigite 2 para INDISPONIVEL")
+    disponibilidade = int(input("Informe a disponibilidade do entregador: "))
     match(disponibilidade):
         case 1:
-            disponibilidade = "Disponivel"
+            disponibilidade = "DISPONIVEL"
         case 2:
-            disponibilidade = "Indisponivel"
+            disponibilidade = "INDISPONIVEL"
 
     idPedidos = []
     for id, dados in pedidos.items():
-        if (dados[5] == "Pendente"):
+        if (dados[5] == "PENDENTE"):
             idPedidos.append(id)
     
     entregadores[id] = [nome, veiculo, disponibilidade, idPedidos]
@@ -66,12 +67,12 @@ def consultarInformacoes(pedidos, entregadores):
         case 1:
             print("Pedidos Entregues: ")
             for id, info in pedidos.items():
-                if info[4] == "Entregue":
+                if info[4] == "ENTREGUE":
                     print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
         case 2:
             print("Pedidos Pendentes: ")
             for id, info in pedidos.items():
-                if info[4] == "Pendente":
+                if info[4] == "PENDENTE":
                     print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
         case 3:
             id_pedido = input("Digite o ID do pedido que deseja buscar: ")
@@ -83,7 +84,7 @@ def consultarInformacoes(pedidos, entregadores):
         case 4:
             print("Entregadores Disponíveis: ")
             for id, info in entregadores.items():
-                if info[2] == "Disponivel":
+                if info[2] == "DISPONIVEL":
                     print(f"ID do entregador: {id}, Nome do entregador: {info[0]}, Veículo: {info[1]}, Disponibilidade: {info[2]}, ID do entregador: {info[3]}")
         case 5:
             id_entregador = input("Digite o ID do entregador para ver suas entregas")
