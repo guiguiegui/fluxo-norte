@@ -24,28 +24,16 @@ def cadastrarPedido (pedido):
             prioridade = "Normal"
     descricao = input("Digite a descrição do produto: ")
     print("TIPOS DE STATUS\n\tDigite 1 para status PENDENTE\n\tDigite 2 para status EM ROTA\n\tDigite 3 para status ENTREGUE\n\tDigite 4 para status CANCELADO")
-    status = int(input("Informe o status do pedido: "))
-    match(status):
-        case 1:
-            status = "Pendente"
-        case 2:
-            status = "Em Rota"
-        case 3:
-            status = "Entregue"
-        case 4:
-            status = "Cancelado"
-        case _:
-            status = "Pendente"
-    idEntregador = int(input("Informe o ID do entregador: "))
+    status = "Pendente"
+    idEntregador = "Não associado"
 
     pedido[id] = [nome, endereco, prioridade, descricao, status, idEntregador]
-    
-    
     return pedido
     
 def cadastrarEntregadores (pedidos, entregadores):
     id = f"{randint(0, 9999):04d}"
     nome = input("Insira o nome do Entregador: ")
+
     veiculo = int(input("Escolha o veiculo do entregador, 1 para Carro, 2 para moto, 3 para Van: "))
     match(veiculo):
         case 1:
@@ -54,17 +42,20 @@ def cadastrarEntregadores (pedidos, entregadores):
             veiculo = "Moto"
         case 3:
             veiculo = "Van"   
-    disponibilidade = input("Mostre a disponibilidade do entregador, 1 para disponivel, 2 para indisponivel: ")
+
+    disponibilidade = int(input("Mostre a disponibilidade do entregador, 1 para disponivel, 2 para indisponivel: "))
     match(disponibilidade):
         case 1:
             disponibilidade = "Disponivel"
         case 2:
             disponibilidade = "Indisponivel"
-    idPedidos = []
-    if pedidos[6] == id and pedidos[5] == "Pendente":
-        idPedidos = pedidos[id]
-        entregadores[id] =  [nome, veiculo, idPedidos, disponibilidade]
 
+    idPedidos = []
+    for id, dados in pedidos.items():
+        if (dados[5] == "Pendente"):
+            idPedidos.append(id)
+    
+    entregadores[id] = [nome, veiculo, disponibilidade, idPedidos]
     return entregadores
 
 def consultarInformacoes(pedidos, entregadores):
@@ -126,4 +117,5 @@ while rodando != 0:
     opcao = int(input("Quer continuar?\nDigite a opção desejada: "))
 
 print(pedidos)
+print(entregadores)
         
