@@ -8,11 +8,12 @@ entregadores = {}
 rodando = 1
 
 def cadastrarPedido (pedido):
+    print("\n\n\tCADASTRAR PEDIDO")
     letra = choice(ascii_uppercase)
     numeros = f"{randint(0, 9999):04d}"
     id = letra + numeros
-    nome = input("Insira o nome do cliente: ").upper
-    endereco = input("Insira o endereço: ").upper
+    nome = input("Insira o nome do cliente: ").upper()
+    endereco = input("Insira o endereço: ").upper()
     print("NÍVEIS DE PRIORIDADE\n\tDigite 1 para PRIORIDADE ALTA\n\tDigite 2 para PRIORIDADE NORMAL")
     prioridade = int(input("Informe o nível de prioridade: "))
     match(prioridade):
@@ -22,16 +23,22 @@ def cadastrarPedido (pedido):
             prioridade = "NORMAL"
         case _:
             prioridade = "NORMAL"
-    descricao = input("Digite a descrição do produto: ").upper
+    descricao = input("Digite a descrição do produto: ").upper()
     status = "PENDENTE"
     idEntregador = "NAO ASSOCIADO"
 
     pedido[id] = [nome, endereco, prioridade, descricao, status, idEntregador]
+
+    if id in pedido:
+        print(f"\n[SUCESSO] Pedido {id} cadastrado no sistema!\n\n")
+    else:
+        print(f"\n[ERRO] Falha ao registrar o pedido {id}.\n\n")
+        
     return pedido
     
 def cadastrarEntregadores (pedidos, entregadores):
     id = f"{randint(0, 9999):04d}"
-    nome = input("Insira o nome do entregador: ")
+    nome = input("Insira o nome do entregador: ").upper()
 
     print("TIPOS DE VEÍCULOS\n\tDigite 1 para CARRO\n\tDigite 2 para MOTO\n\tDigite 3 para VAN")
     veiculo = int(input("Informe o veículo do entregador: "))
@@ -50,11 +57,13 @@ def cadastrarEntregadores (pedidos, entregadores):
             disponibilidade = "DISPONIVEL"
         case 2:
             disponibilidade = "INDISPONIVEL"
+        case _:
+            disponibilidade = "INDISPONIVEL"
 
     idPedidos = []
-    for id, dados in pedidos.items():
-        if (dados[5] == "PENDENTE"):
-            idPedidos.append(id)
+    for idPedido, dados in pedidos.items():
+        if (dados[4] == "PENDENTE" and dados[5] == id):
+            idPedidos.append(idPedido)
     
     entregadores[id] = [nome, veiculo, disponibilidade, idPedidos]
     return entregadores
@@ -95,10 +104,10 @@ def consultarInformacoes(pedidos, entregadores):
             
 
 print("\n\n----------Bem-vindo ao sistema de gerenciamento de entregas da Fluxo Norte!----------\n\n")
-print("Digite a opção desejada:\n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
-opcao = int(input("Digite a opção desejada: "))
 
 while rodando != 0:
+    print("\tMENU\n\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
+    opcao = int(input("Digite a opção desejada: "))
     match(opcao):
         case 1:
             cadastrarPedido(pedidos)
@@ -113,9 +122,6 @@ while rodando != 0:
         case 6:
             print("Sistema finalizado. Obrigado por usar o sistema de gerenciamento de entregas da Fluxo Norte!")
             rodando = 0
-
-    print("\n1 - Cadastro de pedidos \n2 - Cadastro de Entregadores \n3 - Atualização dos pedidos \n4 - Consulta de informações \n5 - Relatórios operacionais \n6 - Finalizar o sistema\n\n")
-    opcao = int(input("Quer continuar?\nDigite a opção desejada: "))
 
 print(pedidos)
 print(entregadores)
