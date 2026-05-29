@@ -1,9 +1,15 @@
+from random import choice, randint
+import string 
+
+
 pedidos = {}
 entregadores = {}
 rodando = 1
 
 def cadastrarPedido (pedido):
-    id = input("Insira um ID: ")
+    letra = choice(string.ascii_uppercase)
+    numeros = f"{randint(0, 9999):04d}"
+    id = letra + numeros
     nome = input("Insira o nome do cliente: ")
     endereco = input("Insira o endereço: ")
     print("NÍVEIS DE PRIORIDADE\n\tDigite 1 para PRIORIDADE ALTA\n\tDigite 2 para PRIORIDADE NORMAL")
