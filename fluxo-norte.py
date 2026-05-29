@@ -1,5 +1,6 @@
 from random import choice, randint
-import string 
+from string import ascii_uppercase
+
 
 
 pedidos = {}
@@ -7,7 +8,7 @@ entregadores = {}
 rodando = 1
 
 def cadastrarPedido (pedido):
-    letra = choice(string.ascii_uppercase)
+    letra = choice(ascii_uppercase)
     numeros = f"{randint(0, 9999):04d}"
     id = letra + numeros
     nome = input("Insira o nome do cliente: ")
@@ -37,14 +38,14 @@ def cadastrarPedido (pedido):
             status = "Pendente"
     idEntregador = int(input("Informe o ID do entregador: "))
 
-    pedido[id] = [nome, endereco, prioridade, descricao, idEntregador]
+    pedido[id] = [nome, endereco, prioridade, descricao, status, idEntregador]
     
     
     return pedido
     
-def cadastrarEntregadores (entregadores):
-    idEntregador = input("Insira um id para o Entregador: ")
-    entregador_nome = input("Insira o nome do Entregador: ")
+def cadastrarEntregadores (pedidos, entregadores):
+    id = f"{randint(0, 9999):04d}"
+    nome = input("Insira o nome do Entregador: ")
     veiculo = int(input("Escolha o veiculo do entregador, 1 para Carro, 2 para moto, 3 para Van: "))
     match(veiculo):
         case 1:
@@ -59,8 +60,10 @@ def cadastrarEntregadores (entregadores):
             disponibilidade = "Disponivel"
         case 2:
             disponibilidade = "Indisponivel"
-
-    entregadores[id] =  [entregador_nome, veiculo, disponibilidade, idEntregador]
+    idPedidos = []
+    if pedidos[6] == id and pedidos[5] == "Pendente":
+        idPedidos = pedidos[id]
+        entregadores[id] =  [nome, veiculo, idPedidos, disponibilidade]
 
     return entregadores
 
@@ -108,7 +111,7 @@ while rodando != 0:
         case 1:
             cadastrarPedido(pedidos)
         case 2:
-            cadastrarEntregadores(entregadores)
+            cadastrarEntregadores(pedidos, entregadores)
         case 3:
             atualizarPedidos(pedidos)
         case 4:
