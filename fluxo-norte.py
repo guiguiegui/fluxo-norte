@@ -68,6 +68,71 @@ def cadastrarEntregadores (pedidos, entregadores):
     entregadores[id] = [nome, veiculo, disponibilidade, idPedidos]
     return entregadores
 
+def atualizarPedidos(pedidos, entregadores):
+    print("\n--- Atualização dos Pedidos ---")
+    print("1 - Alterar o status do pedido")
+    print("2 - Cancelar o pedido")
+    print("3 - Associar entregador a pedido")
+    print("4 - Remover associação de entregador")
+    print("5 - Voltar ao menu principal\n")
+
+    opcao = int(input("Digite a opção desejada: "))
+
+    if opcao == 1:
+        idPedido = input("Digite o ID do pedido: ").upper()
+        if idPedido in pedidos:
+            print("STATUS\n1 - PENDENTE\n2 - EM ROTA\n3 - ENTREGUE\n4 - CANCELADO")
+            novo_status = int(input("Informe o novo status: "))
+            match novo_status:
+                case 1: pedidos[idPedido][4] = "PENDENTE"
+                case 2: pedidos[idPedido][4] = "EM ROTA"
+                case 3: pedidos[idPedido][4] = "ENTREGUE"
+                case 4: pedidos[idPedido][4] = "CANCELADO"
+            print(f"[SUCESSO] Status do pedido {idPedido} atualizado!")
+        else:
+            print("[ERRO] Pedido não encontrado.")
+
+    elif opcao == 2:
+        idPedido = input("Digite o ID do pedido: ").upper()
+        if idPedido in pedidos:
+            pedidos[idPedido][4] = "CANCELADO"
+            print(f"[SUCESSO] Pedido {idPedido} cancelado!")
+        else:
+            print("[ERRO] Pedido não encontrado.")
+
+    elif opcao == 3:
+        idPedido = input("Digite o ID do pedido: ").upper()
+        if idPedido in pedidos:
+            idEntregador = input("Digite o ID do entregador: ").upper()
+            if idEntregador in entregadores:
+                pedidos[idPedido][5] = idEntregador
+                entregadores[idEntregador][3].append(idPedido)
+                print(f"[SUCESSO] Pedido {idPedido} associado ao entregador {idEntregador}!")
+            else:
+                print("[ERRO] Entregador não encontrado.")
+        else:
+            print("[ERRO] Pedido não encontrado.")
+
+    elif opcao == 4:
+        idPedido = input("Digite o ID do pedido: ").upper()
+        if idPedido in pedidos:
+            idEntregador = pedidos[idPedido][5]
+            if idEntregador != "NAO ASSOCIADO" and idEntregador in entregadores:
+                entregadores[idEntregador][3].remove(idPedido)
+                pedidos[idPedido][5] = "NAO ASSOCIADO"
+                print(f"[SUCESSO] Associação removida do pedido {idPedido}.")
+            else:
+                print("[ERRO] Pedido não possui entregador associado.")
+        else:
+            print("[ERRO] Pedido não encontrado.")
+
+    elif opcao == 5:
+        print("Voltando ao menu principal...")
+
+    else:
+        print("[ERRO] Opção inválida.")
+
+
 def consultarInformacoes(pedidos, entregadores):
     print("Consulta de informações")
     print("\n1 - Pedidos Entregues\n2 - Pedidos Entregues\n3 - Buscar por pedido\n4 - Entregador disponivel\n5 - Todas as entregas realizadas por um entregador\n6 - Voltar para o menu principal\n\n")
