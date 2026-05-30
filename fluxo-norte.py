@@ -131,4 +131,105 @@ while rodando != 0:
 
 print(pedidos)
 print(entregadores)
+
+def relatoriosOperacionais(pedidos, entregadores)
+    menuRelatorio = 1 
+
+    while menuRelatorio == 1: 
+        print("\n--- Relatórios Operacionais ---")
+        print("1 - Total de Pedidos")
+        print("2 - Quantidade de pedidos por status")
+        print("3 - Pedidos com mais prioridade")
+        print("4 - Entregador com maior número de entregas")
+
+        print("5 - Voltar ao menu principal\n")
+
+        opcao = int(input("Digite a opção desejada: "))
+
+        if opcao == 1: 
+            total = 0 
+            for id in pedidos: 
+                total = total + 1
+            print(f"\n\tTotal de pedidos cadastrados no sistema: {total}\n")
+
+        elif opcao == 2: 
+            pendente = 0 
+            emRota = 0
+            entregue = 0 
+            cancelado = 0 
+
+            for id in pedidos: 
+                status = pedidos[id][4]
+                if status == "Pendente": 
+                    pendente = pendente + 1 
+                elif status == "Em Rota": 
+                    emRota = emRota + 1
+                elif status == "Entregue": 
+                    entregue = entregue + 1
+                elif status == "Cancelado": 
+                    cancelado = cancelado + 1
+
+            print("\n--- Pedidos por Status ---")
+            print(f"Pendente: {pendente}")
+            print(f"Em Rota: {emRota}")
+            print(f"Entregue: {entregue}")
+            print(f"Cancelado: {cancelado}")
+
+        elif opcao == 3: 
+            listaAlta = []
+
+            for id in pedidos: 
+                if pedidos[id][2] == "Alta": 
+                    listaAlta.append(id)
+
+            if listaAlta == []: 
+                print("\n\tNenhum pedido com prioridade Alta.")
+            else: 
+                print(f"\n--- Pedidos com prioridade alta({len(listaAlta)}) ---")
+
+                for id in listaAlta: 
+                    info = pedidos[id]
+                    print(f"ID: {id} | Cliente: {info[0]}  |  Status: {info[4]}  |  Entregador: {info[5]}")
+                print()
+
+        elif opcao == 4:
+            if entregadores == {}:
+                print("Nenhum entregador cadastrado no sistema")
+            else: 
+                contagemEntregas = {}
+
+                for idEntregador in entregadores: 
+                    contagemEntregas[idEntregador] = 0
+
+                for idPedido in pedidos: 
+                    if pedidos[idPedido][4] == "Entregue": 
+                        idEntregadorDoPedido = pedidos[idPedido][5]
+                        if idEntregadorDoPedido in contagemEntregas: 
+                            contagemEntregas[idEntregadorDoPedido] = contagemEntregas[idEntregadorDoPedido] + 1
+
+                maiorNumero = 0
+                melhorEntregador = "Nenhum"
+
+                for idEntregador in contagemEntregas: 
+                    if contagemEntregas[idEntregador] > maiorNumero: 
+                        maiorNumero = contagemEntregas[idEntregador]
+                        melhorEntregador = idEntregador
+
+                if maiorNumero == 0: 
+                    print("Nenhuma entrega concluída até o momento")
+                else: 
+                    nomeEntregador = entregadores[melhorEntregador][0]
+                    print(f"\n--- Entregador Destaque ---")
+                    print(f"ID  : {melhorEntregador}")
+                    print(f"Nome    : {nomeEntregador}")
+                    print(f"Entregas    : {maiorNumero}")
+
+        elif opcao == 5: 
+            menuRelatorio = 0 
+
+        else: 
+            print("\n\t[ERRO] Opção Inválida. Tente Novamente.")
+                    print(f"\tID       : {melhorEntregador}")
+                    print(f"\tNome     : {nomeEntregador}")
+                    print(f"\tEntregas : {maiorNumero}\n")")
         
