@@ -37,7 +37,8 @@ def cadastrarPedido (pedido):
     return pedido
     
 def cadastrarEntregadores (pedidos, entregadores):
-    id = f"{randint(0, 9999):04d}"
+    numAtual = len(entregadores) + 1
+    id = f"{numAtual:04d}"
     nome = input("Insira o nome do entregador: ").upper()
 
     print("TIPOS DE VEÍCULOS\n\tDigite 1 para CARRO\n\tDigite 2 para MOTO\n\tDigite 3 para VAN")
@@ -167,36 +168,6 @@ def consultarInformacoes(pedidos, entregadores):
                 if info[4] == id_entregador:
                     print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
             
-
-print("\n\n----------Bem-vindo ao sistema de gerenciamento de entregas da Fluxo Norte!----------\n\n")
-
-while rodando != 0:
-    print("-" * 20 + " MENU " + "-" * 20 + "\n\n")
-    print("1 - Cadastro de pedidos")
-    print("2 - Cadastro de Entregadores")
-    print("3 - Atualização dos pedidos")
-    print("4 - Consulta de informações")
-    print("5 - Relatórios operacionais")
-    print("6 - Finalizar o sistema\n")
-    opcao = int(input("Digite a opção desejada: "))
-    match(opcao):
-        case 1:
-            cadastrarPedido(pedidos)
-        case 2:
-            cadastrarEntregadores(pedidos, entregadores)
-        case 3:
-            atualizarPedidos(pedidos)
-        case 4:
-            consultarInformacoes(pedidos, entregadores)
-        case 5:
-            relatoriosOperacionais(pedidos, entregadores)
-        case 6:
-            print("Sistema finalizado. Obrigado por usar o sistema de gerenciamento de entregas da Fluxo Norte!")
-            rodando = 0
-
-print(pedidos)
-print(entregadores)
-
 def relatoriosOperacionais(pedidos, entregadores):
     menuRelatorio = 1 
 
@@ -284,7 +255,7 @@ def relatoriosOperacionais(pedidos, entregadores):
                     print("Nenhuma entrega concluída até o momento")
                 else: 
                     nomeEntregador = entregadores[melhorEntregador][0]
-                    print(f"\n--- Entregador Destaque ---")
+                    print("\n--- Entregador Destaque ---")
                     print(f"ID  : {melhorEntregador}")
                     print(f"Nome    : {nomeEntregador}")
                     print(f"Entregas    : {maiorNumero}")
@@ -294,3 +265,31 @@ def relatoriosOperacionais(pedidos, entregadores):
 
         else: 
             print("\n\t[ERRO] Opção Inválida. Tente Novamente.")
+
+print("\n\n----------Bem-vindo ao sistema de gerenciamento de entregas da Fluxo Norte!----------\n\n")
+while rodando != 0:
+    print("-" * 20 + " MENU " + "-" * 20 + "\n\n")
+    print("1 - Cadastro de pedidos")
+    print("2 - Cadastro de Entregadores")
+    print("3 - Atualização dos pedidos")
+    print("4 - Consulta de informações")
+    print("5 - Relatórios operacionais")
+    print("6 - Finalizar o sistema\n")
+    opcao = int(input("Digite a opção desejada: "))
+    match(opcao):
+        case 1:
+            cadastrarPedido(pedidos)
+        case 2:
+            cadastrarEntregadores(pedidos, entregadores)
+        case 3:
+            atualizarPedidos(pedidos, entregadores)
+        case 4:
+            consultarInformacoes(pedidos, entregadores)
+        case 5:
+            relatoriosOperacionais(pedidos, entregadores)
+        case 6:
+            print("Sistema finalizado. Obrigado por usar o sistema de gerenciamento de entregas da Fluxo Norte!")
+            rodando = 0
+
+print(pedidos)
+print(entregadores)
