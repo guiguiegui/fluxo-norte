@@ -132,7 +132,7 @@ while rodando != 0:
 print(pedidos)
 print(entregadores)
 
-def relatoriosOperacionais(pedidos, entregadores)
+def relatoriosOperacionais(pedidos, entregadores):
     menuRelatorio = 1 
 
     while menuRelatorio == 1: 
@@ -229,7 +229,3 @@ def relatoriosOperacionais(pedidos, entregadores)
 
         else: 
             print("\n\t[ERRO] Opção Inválida. Tente Novamente.")
-                    print(f"\tID       : {melhorEntregador}")
-                    print(f"\tNome     : {nomeEntregador}")
-                    print(f"\tEntregas : {maiorNumero}\n")")
-        
