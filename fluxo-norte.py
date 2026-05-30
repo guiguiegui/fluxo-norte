@@ -26,7 +26,6 @@ def cadastrarPedido (pedido):
     descricao = input("Digite a descrição do produto: ").upper()
     status = "PENDENTE"
     idEntregador = "NAO ASSOCIADO"
-
     pedido[id] = [nome, endereco, prioridade, descricao, status, idEntregador]
 
     if id in pedido:
@@ -40,7 +39,7 @@ def cadastrarEntregadores (pedidos, entregadores):
     numAtual = len(entregadores) + 1
     id = f"{numAtual:04d}"
     nome = input("Insira o nome do entregador: ").upper()
-
+    
     print("TIPOS DE VEÍCULOS\n\tDigite 1 para CARRO\n\tDigite 2 para MOTO\n\tDigite 3 para VAN")
     veiculo = int(input("Informe o veículo do entregador: "))
     match(veiculo):
@@ -61,11 +60,7 @@ def cadastrarEntregadores (pedidos, entregadores):
         case _:
             disponibilidade = "INDISPONIVEL"
 
-    idPedidos = []
-    for idPedido, dados in pedidos.items():
-        if (dados[4] == "PENDENTE" and dados[5] == id):
-            idPedidos.append(idPedido)
-    
+    idPedidos = []    
     entregadores[id] = [nome, veiculo, disponibilidade, idPedidos]
     return entregadores
 
@@ -85,10 +80,14 @@ def atualizarPedidos(pedidos, entregadores):
             print("STATUS\n1 - PENDENTE\n2 - EM ROTA\n3 - ENTREGUE\n4 - CANCELADO")
             novo_status = int(input("Informe o novo status: "))
             match novo_status:
-                case 1: pedidos[idPedido][4] = "PENDENTE"
-                case 2: pedidos[idPedido][4] = "EM ROTA"
-                case 3: pedidos[idPedido][4] = "ENTREGUE"
-                case 4: pedidos[idPedido][4] = "CANCELADO"
+                case 1:
+                    pedidos[idPedido][4] = "PENDENTE"
+                case 2:
+                    pedidos[idPedido][4] = "EM ROTA"
+                case 3:
+                    pedidos[idPedido][4] = "ENTREGUE"
+                case 4:
+                    pedidos[idPedido][4] = "CANCELADO"
             print(f"[SUCESSO] Status do pedido {idPedido} atualizado!")
         else:
             print("[ERRO] Pedido não encontrado.")
@@ -165,7 +164,7 @@ def consultarInformacoes(pedidos, entregadores):
             id_entregador = input("Digite o ID do entregador para ver suas entregas: ").upper()
             print(f"Entregas realizadas pelo entregador {id_entregador}: ")
             for id, info in pedidos.items():
-                if info[4] == id_entregador:
+                if info[5] == id_entregador:
                     print(f"ID do pedido: {id}, Nome do cliente: {info[0]}, Endereço: {info[1]}, Prioridade: {info[2]}, Descrição do produto: {info[3]}, ID do entregador: {info[4]}")
             
 def relatoriosOperacionais(pedidos, entregadores):
@@ -196,32 +195,32 @@ def relatoriosOperacionais(pedidos, entregadores):
 
             for id in pedidos: 
                 status = pedidos[id][4]
-                if status == "Pendente": 
+                if status == "PENDENTE": 
                     pendente = pendente + 1 
-                elif status == "Em Rota": 
+                elif status == "EM ROTA": 
                     emRota = emRota + 1
-                elif status == "Entregue": 
+                elif status == "ENTREGUE": 
                     entregue = entregue + 1
-                elif status == "Cancelado": 
+                elif status == "CANCELADO": 
                     cancelado = cancelado + 1
 
             print("\n--- Pedidos por Status ---")
-            print(f"Pendente: {pendente}")
-            print(f"Em Rota: {emRota}")
-            print(f"Entregue: {entregue}")
-            print(f"Cancelado: {cancelado}")
+            print(f"PENDENTE: {pendente}")
+            print(f"EM ROTA: {emRota}")
+            print(f"ENTREGUE: {entregue}")
+            print(f"CANCELADO: {cancelado}")
 
         elif opcao == 3: 
             listaAlta = []
 
             for id in pedidos: 
-                if pedidos[id][2] == "Alta": 
+                if pedidos[id][2] == "ALTA": 
                     listaAlta.append(id)
 
             if listaAlta == []: 
-                print("\n\tNenhum pedido com prioridade Alta.")
+                print("\n\tNenhum pedido com prioridade ALTA.")
             else: 
-                print(f"\n--- Pedidos com prioridade alta({len(listaAlta)}) ---")
+                print(f"\n--- Pedidos com prioridade ALTA({len(listaAlta)}) ---")
 
                 for id in listaAlta: 
                     info = pedidos[id]
