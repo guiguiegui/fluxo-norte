@@ -50,14 +50,14 @@ def removerPedidoDoEntregador(idPedido, pedidos, entregadores):
     idEntregador = pedidos[idPedido][5]
 
     if idEntregador != "NAO ASSOCIADO" and idEntregador in entregadores:
-        if idPedido in entregadores[idEntregador][3]:
-            entregadores[idEntregador][3].remove(idPedido)
+        if idPedido in entregadores[idEntregador][4]:
+            entregadores[idEntregador][4].remove(idPedido)
 
     pedidos[idPedido][5] = "NAO ASSOCIADO"
 
 
 def ordenarPedidosDoEntregador(idEntregador, pedidos, entregadores):
-    listaPedidos = entregadores[idEntregador][3]
+    listaPedidos = entregadores[idEntregador][4]
     listaOrdenada = []
     maiorOrdem = 0
 
@@ -79,7 +79,7 @@ def ordenarPedidosDoEntregador(idEntregador, pedidos, entregadores):
                 listaOrdenada.append(idPedido)
         ordemAtual = ordemAtual + 1
 
-    entregadores[idEntregador][3] = listaOrdenada
+    entregadores[idEntregador][4] = listaOrdenada
 
 
 def cadastrarPedido(pedidos):
@@ -126,6 +126,12 @@ def cadastrarEntregadores(pedidos, entregadores):
 
     idEntregador = gerarIdEntregadorUnico(entregadores)
     nome = input("Informe o nome do entregador: ").upper()
+    cpf = input("Informe o CPF do entregador: ")
+
+    for idCadastrado, info in entregadores.items():
+        if info[1] == cpf:
+            print(f"{VERMELHO}[ERRO]{RESET} Já existe entregador cadastrado com este CPF.")
+            return entregadores
 
     print("\nVEICULO")
     print("1 - CARRO")
@@ -152,8 +158,9 @@ def cadastrarEntregadores(pedidos, entregadores):
         case 2:
             disponibilidade = "INDISPONIVEL"
 
-    idPedidos = []
-    entregadores[idEntregador] = [nome, veiculo, disponibilidade, idPedidos]
+    pedidosAtuais = []
+    entregasRealizadas = []
+    entregadores[idEntregador] = [nome, cpf, veiculo, disponibilidade, pedidosAtuais, entregasRealizadas]
     print(f"\n{VERDE}[SUCESSO]{RESET} Entregador {idEntregador} cadastrado no sistema!\n")
 
     return entregadores
@@ -177,6 +184,9 @@ def atualizarPedidos(pedidos, entregadores):
             if pedidos[idPedido][4] == "CANCELADO":
                 print(f"{VERMELHO}[ERRO]{RESET} Pedido cancelado não pode ser reativado ou alterado.")
                 return
+            if pedidos[idPedido][4] == "ENTREGUE":
+                print(f"{VERMELHO}[ERRO]{RESET} Pedido entregue não pode ser alterado.")
+                return
 
             print("\nSTATUS")
             print("1 - PENDENTE")
@@ -191,7 +201,16 @@ def atualizarPedidos(pedidos, entregadores):
                 case 2:
                     pedidos[idPedido][4] = "EM ROTA"
                 case 3:
-                    pedidos[idPedido][4] = "ENTREGUE"
+                    idEntregador = pedidos[idPedido][5]
+                    if idEntregador == "NAO ASSOCIADO":
+                        print(f"{VERMELHO}[ERRO]{RESET} Pedido sem entregador não pode ser marcado como entregue.")
+                        return
+                    else:
+                        pedidos[idPedido][4] = "ENTREGUE"
+                        if idPedido in entregadores[idEntregador][4]:
+                            entregadores[idEntregador][4].remove(idPedido)
+                        if idPedido not in entregadores[idEntregador][5]:
+                            entregadores[idEntregador][5].append(idPedido)
                 case 4:
                     pedidos[idPedido][4] = "CANCELADO"
                     removerPedidoDoEntregador(idPedido, pedidos, entregadores)
@@ -205,6 +224,8 @@ def atualizarPedidos(pedidos, entregadores):
         if idPedido in pedidos:
             if pedidos[idPedido][4] == "CANCELADO":
                 print(f"{VERMELHO}[ERRO]{RESET} Pedido já está cancelado.")
+            elif pedidos[idPedido][4] == "ENTREGUE":
+                print(f"{VERMELHO}[ERRO]{RESET} Pedido entregue não pode ser cancelado.")
             else:
                 pedidos[idPedido][4] = "CANCELADO"
                 removerPedidoDoEntregador(idPedido, pedidos, entregadores)
@@ -225,12 +246,14 @@ def atualizarPedidos(pedidos, entregadores):
                 if idEntregador in entregadores:
                     if pedidos[idPedido][5] == idEntregador:
                         print(f"{VERMELHO}[ERRO]{RESET} Pedido já está associado a este entregador.")
-                    elif len(entregadores[idEntregador][3]) >= 10:
+                    elif entregadores[idEntregador][3] == "INDISPONIVEL":
+                        print(f"{VERMELHO}[ERRO]{RESET} Entregador indisponível não pode receber pedido.")
+                    elif len(entregadores[idEntregador][4]) >= 10:
                         print(f"{VERMELHO}[ERRO]{RESET} Entregador já atingiu o limite de 10 pedidos.")
                     else:
                         removerPedidoDoEntregador(idPedido, pedidos, entregadores)
                         pedidos[idPedido][5] = idEntregador
-                        entregadores[idEntregador][3].append(idPedido)
+                        entregadores[idEntregador][4].append(idPedido)
                         ordenarPedidosDoEntregador(idEntregador, pedidos, entregadores)
                         print(f"{VERDE}[SUCESSO]{RESET} Pedido {AMARELO}{idPedido}{RESET} associado ao entregador {idEntregador}!")
                 else:
@@ -241,6 +264,9 @@ def atualizarPedidos(pedidos, entregadores):
     elif opcao == 4:
         idPedido = input("Digite o ID do pedido: ").upper()
         if idPedido in pedidos:
+            if pedidos[idPedido][4] == "ENTREGUE":
+                print(f"{VERMELHO}[ERRO]{RESET} Associação de pedido entregue não pode ser removida.")
+                return
             if pedidos[idPedido][5] != "NAO ASSOCIADO":
                 removerPedidoDoEntregador(idPedido, pedidos, entregadores)
                 print(f"{VERDE}[SUCESSO]{RESET} Associação removida do pedido {AMARELO}{idPedido}{RESET}.")
@@ -303,14 +329,15 @@ def consultarInformacoes(pedidos, entregadores):
             print("ENTREGADORES DISPONÍVEIS")
             encontrou = 0
             for idEntregador, info in entregadores.items():
-                if info[2] == "DISPONIVEL":
+                if info[3] == "DISPONIVEL":
                     print("-" * 50)
                     print(f"ID do entregador  : {idEntregador}")
                     print(f"Nome              : {info[0]}")
-                    print(f"Veículo           : {info[1]}")
-                    print(f"Disponibilidade   : {info[2]}")
-                    print("Pedidos associados: ", end="")
-                    for idPedido in info[3]:
+                    print(f"CPF               : {info[1]}")
+                    print(f"Veículo           : {info[2]}")
+                    print(f"Disponibilidade   : {info[3]}")
+                    print("Pedidos atuais    : ", end="")
+                    for idPedido in info[4]:
                         print(f"{AMARELO}{idPedido}{RESET} ", end="")
                     print()
                     encontrou = 1
@@ -325,12 +352,13 @@ def consultarInformacoes(pedidos, entregadores):
 
             print("\n" + "-" * 50)
             print(f"ENTREGAS DO ENTREGADOR {idEntregador}")
-            idPedidos = entregadores[idEntregador][3]
-            if idPedidos == []:
-                print(f"{CIANO}[INFO]{RESET} Nenhum pedido associado a este entregador.")
+            entregasRealizadas = entregadores[idEntregador][5]
+            if entregasRealizadas == []:
+                print(f"{CIANO}[INFO]{RESET} Nenhuma entrega realizada por este entregador.")
             else:
-                for idPedido in idPedidos:
-                    mostrarPedido(idPedido, pedidos[idPedido])
+                for idPedido in entregasRealizadas:
+                    if pedidos[idPedido][4] == "ENTREGUE":
+                        mostrarPedido(idPedido, pedidos[idPedido])
 
         case 6:
             print(f"{CIANO}[INFO]{RESET} Voltando ao menu principal...")
@@ -411,23 +439,14 @@ def relatoriosOperacionais(pedidos, entregadores):
             if entregadores == {}:
                 print(f"{CIANO}[INFO]{RESET} Nenhum entregador cadastrado no sistema.")
             else:
-                contagemEntregas = {}
-
-                for idEntregador in entregadores:
-                    contagemEntregas[idEntregador] = 0
-
-                for idPedido in pedidos:
-                    if pedidos[idPedido][4] == "ENTREGUE":
-                        idEntregadorDoPedido = pedidos[idPedido][5]
-                        if idEntregadorDoPedido in contagemEntregas:
-                            contagemEntregas[idEntregadorDoPedido] = contagemEntregas[idEntregadorDoPedido] + 1
-
                 maiorNumero = 0
                 melhorEntregador = "Nenhum"
 
-                for idEntregador in contagemEntregas:
-                    if contagemEntregas[idEntregador] > maiorNumero:
-                        maiorNumero = contagemEntregas[idEntregador]
+                for idEntregador in entregadores:
+                    quantidadeEntregas = len(entregadores[idEntregador][5])
+
+                    if quantidadeEntregas > maiorNumero:
+                        maiorNumero = quantidadeEntregas
                         melhorEntregador = idEntregador
 
                 if maiorNumero == 0:
