@@ -94,13 +94,17 @@ def cadastrarPedido(pedidos):
     print("\nPRIORIDADE")
     print("1 - ALTA")
     print("2 - NORMAL")
-    prioridade = int(input("Informe o nível de prioridade: "))
+    prioridade = input("Informe o nível de prioridade: ")
 
     match prioridade:
-        case 1:
+        case "1":
             prioridade = "ALTA"
-        case 2:
+        case "2":
             prioridade = "NORMAL"
+        case _:
+            print(f"{VERMELHO}[ERRO]{RESET} Prioridade inválida.")
+            print(f"{CIANO}[INFO]{RESET} Pedido não cadastrado. Selecione a opção de cadastro novamente e informe os dados corretamente.")
+            return pedidos
 
     descricao = input("Informe a descrição do produto: ").upper()
     ordemPedido = len(pedidos) + 1
@@ -137,26 +141,34 @@ def cadastrarEntregadores(pedidos, entregadores):
     print("1 - CARRO")
     print("2 - MOTO")
     print("3 - VAN")
-    veiculo = int(input("Informe o veículo do entregador: "))
+    veiculo = input("Informe o veículo do entregador: ")
 
     match veiculo:
-        case 1:
+        case "1":
             veiculo = "CARRO"
-        case 2:
+        case "2":
             veiculo = "MOTO"
-        case 3:
+        case "3":
             veiculo = "VAN"
+        case _:
+            print(f"{VERMELHO}[ERRO]{RESET} Veículo inválido.")
+            print(f"{CIANO}[INFO]{RESET} Entregador não cadastrado. Selecione a opção de cadastro novamente e informe os dados corretamente.")
+            return entregadores
 
     print("\nDISPONIBILIDADE")
     print("1 - DISPONIVEL")
     print("2 - INDISPONIVEL")
-    disponibilidade = int(input("Informe a disponibilidade do entregador: "))
+    disponibilidade = input("Informe a disponibilidade do entregador: ")
 
     match disponibilidade:
-        case 1:
+        case "1":
             disponibilidade = "DISPONIVEL"
-        case 2:
+        case "2":
             disponibilidade = "INDISPONIVEL"
+        case _:
+            print(f"{VERMELHO}[ERRO]{RESET} Disponibilidade inválida.")
+            print(f"{CIANO}[INFO]{RESET} Entregador não cadastrado. Selecione a opção de cadastro novamente e informe os dados corretamente.")
+            return entregadores
 
     pedidosAtuais = []
     entregasRealizadas = []
@@ -176,9 +188,9 @@ def atualizarPedidos(pedidos, entregadores):
     print("4 - Remover associação de entregador")
     print("5 - Voltar ao menu principal\n")
 
-    opcao = int(input("Digite a opção desejada: "))
+    opcao = input("Digite a opção desejada: ")
 
-    if opcao == 1:
+    if opcao == "1":
         idPedido = input("Digite o ID do pedido: ").upper()
         if idPedido in pedidos:
             if pedidos[idPedido][4] == "CANCELADO":
@@ -193,14 +205,14 @@ def atualizarPedidos(pedidos, entregadores):
             print("2 - EM ROTA")
             print("3 - ENTREGUE")
             print("4 - CANCELADO")
-            novoStatus = int(input("Informe o novo status: "))
+            novoStatus = input("Informe o novo status: ")
 
             match novoStatus:
-                case 1:
+                case "1":
                     pedidos[idPedido][4] = "PENDENTE"
-                case 2:
+                case "2":
                     pedidos[idPedido][4] = "EM ROTA"
-                case 3:
+                case "3":
                     idEntregador = pedidos[idPedido][5]
                     if idEntregador == "NAO ASSOCIADO":
                         print(f"{VERMELHO}[ERRO]{RESET} Pedido sem entregador não pode ser marcado como entregue.")
@@ -211,15 +223,19 @@ def atualizarPedidos(pedidos, entregadores):
                             entregadores[idEntregador][4].remove(idPedido)
                         if idPedido not in entregadores[idEntregador][5]:
                             entregadores[idEntregador][5].append(idPedido)
-                case 4:
+                case "4":
                     pedidos[idPedido][4] = "CANCELADO"
                     removerPedidoDoEntregador(idPedido, pedidos, entregadores)
+                case _:
+                    print(f"{VERMELHO}[ERRO]{RESET} Status inválido.")
+                    print(f"{CIANO}[INFO]{RESET} Status não alterado. Selecione a opção de atualização novamente e informe os dados corretamente.")
+                    return
 
             print(f"{VERDE}[SUCESSO]{RESET} Status do pedido {AMARELO}{idPedido}{RESET} atualizado!")
         else:
             print(f"{VERMELHO}[ERRO]{RESET} Pedido não encontrado.")
 
-    elif opcao == 2:
+    elif opcao == "2":
         idPedido = input("Digite o ID do pedido: ").upper()
         if idPedido in pedidos:
             if pedidos[idPedido][4] == "CANCELADO":
@@ -233,7 +249,7 @@ def atualizarPedidos(pedidos, entregadores):
         else:
             print(f"{VERMELHO}[ERRO]{RESET} Pedido não encontrado.")
 
-    elif opcao == 3:
+    elif opcao == "3":
         idPedido = input("Digite o ID do pedido: ").upper()
         if idPedido in pedidos:
             if pedidos[idPedido][4] == "CANCELADO":
@@ -261,7 +277,7 @@ def atualizarPedidos(pedidos, entregadores):
         else:
             print(f"{VERMELHO}[ERRO]{RESET} Pedido não encontrado.")
 
-    elif opcao == 4:
+    elif opcao == "4":
         idPedido = input("Digite o ID do pedido: ").upper()
         if idPedido in pedidos:
             if pedidos[idPedido][4] == "ENTREGUE":
@@ -275,7 +291,7 @@ def atualizarPedidos(pedidos, entregadores):
         else:
             print(f"{VERMELHO}[ERRO]{RESET} Pedido não encontrado.")
 
-    elif opcao == 5:
+    elif opcao == "5":
         print(f"{CIANO}[INFO]{RESET} Voltando ao menu principal...")
     else:
         print(f"{VERMELHO}[ERRO]{RESET} Opção inválida.")
@@ -292,10 +308,10 @@ def consultarInformacoes(pedidos, entregadores):
     print("5 - Listar todas as entregas realizadas por um entregador")
     print("6 - Voltar para o menu principal\n")
 
-    opcao = int(input("Digite a opção desejada: "))
+    opcao = input("Digite a opção desejada: ")
 
     match opcao:
-        case 1:
+        case "1":
             print("\n" + "-" * 50)
             print("PEDIDOS PENDENTES")
             encontrou = 0
@@ -306,7 +322,7 @@ def consultarInformacoes(pedidos, entregadores):
             if encontrou == 0:
                 print(f"{CIANO}[INFO]{RESET} Nenhum pedido pendente encontrado.")
 
-        case 2:
+        case "2":
             print("\n" + "-" * 50)
             print("PEDIDOS ENTREGUES")
             encontrou = 0
@@ -317,14 +333,14 @@ def consultarInformacoes(pedidos, entregadores):
             if encontrou == 0:
                 print(f"{CIANO}[INFO]{RESET} Nenhum pedido entregue encontrado.")
 
-        case 3:
+        case "3":
             idPedido = input("Digite o ID do pedido que deseja buscar: ").upper()
             if idPedido in pedidos:
                 mostrarPedido(idPedido, pedidos[idPedido])
             else:
                 print(f"{VERMELHO}[ERRO]{RESET} Pedido não encontrado.")
 
-        case 4:
+        case "4":
             print("\n" + "-" * 50)
             print("ENTREGADORES DISPONÍVEIS")
             encontrou = 0
@@ -344,7 +360,7 @@ def consultarInformacoes(pedidos, entregadores):
             if encontrou == 0:
                 print(f"{CIANO}[INFO]{RESET} Nenhum entregador disponível encontrado.")
 
-        case 5:
+        case "5":
             idEntregador = input("Digite o ID do entregador para ver suas entregas: ").upper()
             if idEntregador not in entregadores:
                 print(f"{VERMELHO}[ERRO]{RESET} Entregador não encontrado.")
@@ -360,7 +376,7 @@ def consultarInformacoes(pedidos, entregadores):
                     if pedidos[idPedido][4] == "ENTREGUE":
                         mostrarPedido(idPedido, pedidos[idPedido])
 
-        case 6:
+        case "6":
             print(f"{CIANO}[INFO]{RESET} Voltando ao menu principal...")
         case _:
             print(f"{VERMELHO}[ERRO]{RESET} Opção inválida.")
@@ -379,9 +395,9 @@ def relatoriosOperacionais(pedidos, entregadores):
         print("4 - Entregador com maior número de entregas")
         print("5 - Voltar ao menu principal\n")
 
-        opcao = int(input("Digite a opção desejada: "))
+        opcao = input("Digite a opção desejada: ")
 
-        if opcao == 1:
+        if opcao == "1":
             total = 0
             for idPedido in pedidos:
                 total = total + 1
@@ -389,7 +405,7 @@ def relatoriosOperacionais(pedidos, entregadores):
             print("RELATÓRIO - TOTAL DE PEDIDOS")
             print(f"Total de pedidos: {total}")
 
-        elif opcao == 2:
+        elif opcao == "2":
             pendente = 0
             emRota = 0
             entregue = 0
@@ -413,7 +429,7 @@ def relatoriosOperacionais(pedidos, entregadores):
             print(f"ENTREGUE  : {entregue}")
             print(f"CANCELADO : {cancelado}")
 
-        elif opcao == 3:
+        elif opcao == "3":
             listaAlta = []
 
             for idPedido in pedidos:
@@ -435,7 +451,7 @@ def relatoriosOperacionais(pedidos, entregadores):
                     print(f"Entregador : {info[5]}")
                 print()
 
-        elif opcao == 4:
+        elif opcao == "4":
             if entregadores == {}:
                 print(f"{CIANO}[INFO]{RESET} Nenhum entregador cadastrado no sistema.")
             else:
@@ -459,7 +475,7 @@ def relatoriosOperacionais(pedidos, entregadores):
                     print(f"Nome     : {nomeEntregador}")
                     print(f"Entregas : {maiorNumero}")
 
-        elif opcao == 5:
+        elif opcao == "5":
             menuRelatorio = 0
         else:
             print(f"{VERMELHO}[ERRO]{RESET} Opção Inválida.")
@@ -480,20 +496,20 @@ while rodando != 0:
     print("5 - Relatórios operacionais")
     print("6 - Finalizar o sistema\n")
 
-    opcao = int(input("Digite a opção desejada: "))
+    opcao = input("Digite a opção desejada: ")
 
     match opcao:
-        case 1:
+        case "1":
             cadastrarPedido(pedidos)
-        case 2:
+        case "2":
             cadastrarEntregadores(pedidos, entregadores)
-        case 3:
+        case "3":
             atualizarPedidos(pedidos, entregadores)
-        case 4:
+        case "4":
             consultarInformacoes(pedidos, entregadores)
-        case 5:
+        case "5":
             relatoriosOperacionais(pedidos, entregadores)
-        case 6:
+        case "6":
             print(f"{CIANO}[INFO]{RESET} Sistema finalizado. Obrigado por usar o Fluxo Norte!")
             rodando = 0
         case _:
